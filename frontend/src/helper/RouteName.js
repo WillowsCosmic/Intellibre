@@ -1,0 +1,7 @@
+export const RouteIndex = '/'
+export const RouteLogin = '/login'
+export const RouteSignup = '/signup'
+export const RouteDashboard = '/dashboard'
+export const RouteEditorPage = '/editor/:bookId'
+export const RouteViewBook = '/view-book/:bookId'
+export const RouteProfile = '/profile'
