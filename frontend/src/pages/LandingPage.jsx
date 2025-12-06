@@ -6,7 +6,7 @@ import Features from '@/components/landing/Features'
 
 const LandingPage = () => {
   return (
-    <div>
+    <div className='mb-[100vh]'>
       <Navbar />
       <Hero />
       <Features />

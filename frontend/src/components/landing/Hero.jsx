@@ -33,7 +33,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <Link
               to={isAuthenticated ? "/dashboard" : "/login"}
-              className="group inline-flex items-center space-x-2   bg-linear-to-r from-teal-400 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-teal-500/30 hover:shadow-teal-500/50 hover:scale-105 transition-all duration-200"
+              className="group inline-flex items-center space-x-2 bg-linear-to-r from-teal-400 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-teal-500/30 hover:shadow-teal-500/50 hover:scale-105 transition-all duration-200"
             >
               <span>Start Creating for Free</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-tranform" />
@@ -75,7 +75,7 @@ const Hero = () => {
                 />
                 <div className="absolute top-6 right bg-white rounded-2xl shadow-xl p-4 backdrop-blur-sm border border-gray-100 animate-in fade-in slide-in-from-right duration-200">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-linear-to-r from-teal-400 to-cyan-500 rounded-lg flex items-center">
+                    <div className="w-10 h-10 bg-linear-to-r from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center">
                       <Zap className="w-5 h-5 text-white" />
                     </div>
                     <div>
