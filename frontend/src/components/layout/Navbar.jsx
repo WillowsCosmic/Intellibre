@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import ProfileDropdown from './ProfileDropdown'
 import { Menu, X, BookOpen, LogOut } from "lucide-react"
@@ -8,20 +8,24 @@ const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null) 
 
   const navLinks = [
     { name: "Features", href: "#features" },
-    
   ]
 
   useEffect(() => {
-    const handleClickOutside = () => {
-      if (profileDropdownOpen) {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setProfileDropdownOpen(false)
       }
     };
-    document.addEventListener("click", handleClickOutside)
-    return () => document.removeEventListener("click", handleClickOutside)
+    
+    if (profileDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+    
+    return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [profileDropdownOpen])
 
   return (
@@ -53,19 +57,17 @@ const Navbar = () => {
 
           {/* Desktop Auth Actions */}
           <div className="hidden lg:flex items-center space-x-3">
-            {isAuthenticated ? (
-              <ProfileDropdown
-                isOpen={profileDropdownOpen}
-                onToggle={(e) => {
-                  e.stopPropagation();
-                  setProfileDropdownOpen(!profileDropdownOpen);
-                }}
-                avatar={user?.avatar || ""}
-                companyName={user?.name || ""}
-                email={user?.email || ""}
-                userRole={user?.role || ""}
-                onLogout={logout}
-              />
+            {!isAuthenticated ? (
+              <div ref={dropdownRef}> 
+                <ProfileDropdown
+                  isOpen={profileDropdownOpen}
+                  onToggle={() => setProfileDropdownOpen(prev => !prev)} 
+                  avatar={user?.avatar || ""}
+                  companyName={user?.name || "Guest"}
+                  email={user?.email || ""}
+                  onLogout={logout}
+                />
+              </div>
             ) : (
               <>
                 <a
@@ -98,8 +100,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className='lg:hidden bg-[#faf7f3] border-t border-[#e8e0d5] animate-in slide-in-from-top duration-200'>
-          {/* Mobile Navigation Links */}
+        <div className='lg:hidden bg-[#faf7f3] border-t border-[#e8e0d5]'>
           <nav className='px-4 py-4 space-y-1'>
             {navLinks.map((link) => (
               <a 
@@ -113,11 +114,9 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* Mobile Auth Section */}
           <div className='px-4 py-4 border-t border-[#e8e0d5]'>
             {isAuthenticated ? (
               <div className='space-y-3'>
-                {/* User Info */}
                 <div className="flex items-center space-x-3 px-2">
                   <div className="h-10 w-10 bg-linear-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
                     {user?.avatar ? (
@@ -142,7 +141,6 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                {/* Logout Button */}
                 <Button 
                   onClick={() => {
                     logout();
