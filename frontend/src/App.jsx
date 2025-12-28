@@ -9,11 +9,13 @@ import DashboardPage from './pages/DashboardPage'
 import EditorPage from './pages/EditorPage'
 import ViewBookPage from './pages/ViewBookPage'
 import Profile from './pages/Profile'
+import { ToastComponent } from './components/ui/ToastComponent'
 
 
 const App = () => {
   return (
     <div>
+      <ToastComponent />
       <Routes>
         {/* public Routes */}
         <Route path={RouteIndex} element={<LandingPage />}/>
