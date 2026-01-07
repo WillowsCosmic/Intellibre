@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import { randomToast, showError, showSuccess } from "@/components/ui/ToastFunctions";
+import { FaEye } from "react-icons/fa";
+import { PiEyeClosedDuotone } from "react-icons/pi";
 
 const formSchema = z.object({
   email: z
@@ -42,6 +44,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false)
+  const [isTypePassword, setIsTypePassword] = useState(true)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -101,7 +104,21 @@ const LoginPage = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="Enter your password" {...field} className="border-2 focus:border-teal-100 focus:ring focus:ring-teal-100 focus:outline-none focus:shadow-lg transition duration-300" />
+                      <div className="relative">
+                        <Input
+                          type={isTypePassword ? "password" : "text"}
+                          placeholder="Enter your password"
+                          {...field}
+                          className="border-2 focus:border-teal-100 focus:ring focus:ring-teal-100 focus:outline-none focus:shadow-lg transition duration-300 pr-10"
+                        />
+                        <button
+                          className="absolute inset-y-0 right-0 flex items-center pr-3"
+                          type="button"
+                          onClick={() => setIsTypePassword(!isTypePassword)}
+                        >
+                          {isTypePassword ? <PiEyeClosedDuotone /> : <FaEye />}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
