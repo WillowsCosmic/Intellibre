@@ -15,10 +15,7 @@ const ProfileDropdown = ({
     <div className="relative">
       {/* Profile Button */}
       <button
-        onClick={(e) => {
-          e.stopPropagation(); 
-          onToggle();
-        }}
+        onClick={onToggle}
         className="flex items-center space-x-3 p-2 rounded-xl hover:bg-[#f5f1eb] transition-colors duration-200"
       >
         {/* Avatar */}

@@ -1,22 +1,23 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const AuthContext = createContext();
 
-export const useAuth = ()=> {
+export const useAuth = () => {
     const context = useContext(AuthContext)
-    if(!context){
+    if (!context) {
         throw new Error("useAuth must be within an AuthProvider")
     }
     return context
 };
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
 
     useEffect(() => {
-      checkAuthStatus();
+        checkAuthStatus();
     }, []);
 
     const checkAuthStatus = async () => {
@@ -36,9 +37,10 @@ export const AuthProvider = ({children}) => {
             setLoading(false)
         }
     };
-    const login = (userData,token) => {
-        localStorage.setItem('token',token);
-        localStorage.setItem('user',JSON.stringify(userData));
+    
+    const login = (userData, token) => {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(userData));
 
         setUser(userData)
         setIsAuthenticated(true);
@@ -53,8 +55,8 @@ export const AuthProvider = ({children}) => {
         window.location.href = '/'
     }
     const updateUser = (updatedUserData) => {
-        const newUserData = {...user, ...updatedUserData};
-        localStorage.setItem('user',JSON.stringify(newUserData));
+        const newUserData = { ...user, ...updatedUserData };
+        localStorage.setItem('user', JSON.stringify(newUserData));
         setUser(newUserData);
     };
 
@@ -67,6 +69,6 @@ export const AuthProvider = ({children}) => {
         updateUser,
         checkAuthStatus
     };
-    return <AuthContext.Provider value = {value}>{children}</AuthContext.Provider>
-    
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+
 };

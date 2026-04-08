@@ -56,7 +56,7 @@ const Features = () => {
                     >
                       <path
                         strokeLinecap='round'
-                        strokeLineJoin="round"
+                        strokeLinejoin="round"
                         strokeWidth={2}
                         d="M9 5l7 7-7 7"
                       />
@@ -81,7 +81,7 @@ const Features = () => {
             >
               <path
                 strokeLinecap='round'
-                strokeLineJoin="round"
+                strokeLinejoin="round"
                 strokeWidth={2}
                 d="M13 7l5 5m0 0l-5 5m5-SH6"
               />
