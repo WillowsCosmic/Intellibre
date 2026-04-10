@@ -8,7 +8,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout"
 import { Button } from "@/components/ui/button"
 import { FaPlus } from "react-icons/fa"
 import { useAuth } from "@/context/AuthContext"
-import { Book } from "lucide-react";
+import { Book, Plus } from "lucide-react";
 import BookCard from "@/components/cards/BookCard";
 
 const BookCardSkeleton = () => {
@@ -19,6 +19,39 @@ const BookCardSkeleton = () => {
       <div className="h-4 bg-slate-200 rounded-w-1/2"></div>
     </div>
   </div>
+}
+
+const ConfirmationModal = ({ isOpen, onclose, onConfirm, title, message }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div className="flex items-center justify-center min-h-screen p-4 text-center">
+        <div
+          className="fixed inset-0 bg-black/50 bg-opacity-25 transition-opacity"
+          onClick={onclose}
+        ></div>
+        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
+          <h3 className="text-lg font-semibold text-slate-900 mb-4">{title}</h3>
+          <p className="text-slate-600 mb-6">{message}</p>
+          <div className="flex justify-end space-x-3">
+            <Button
+              variant="secondary"
+              onClick={onclose}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={onConfirm}
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 const DashboardPage = () => {
@@ -41,8 +74,22 @@ const DashboardPage = () => {
     };
     fetchBooks();
   }, []);
+  
   const handleDeleteBook = async () => {
     if (!bookToDelete) return;
+    try {
+      await axiosInstance.delete(
+        `${API_PATHS.BOOKS.DELETE_BOOK}${bookToDelete}`
+      );
+      console.log("error in path")
+      setBooks(books.filter((book) => book._id !== bookToDelete));
+      showSuccess("eBook deleted successfully")
+    } catch (error) {
+      console.log(error)
+      showError(error.response?.data?.message || "Failed to delete eBook.")
+    } finally {
+      setBookToDelete(null)
+    }
   };
   const handleCreateBookClick = () => {
     setIsCreateModalOpen(true)
@@ -61,7 +108,7 @@ const DashboardPage = () => {
           <div>
             <h1 className="text-lg font-bold text-slate-900">All eBooks</h1>
             <p className="text-[13px] text-slate-600 mt-1">
-              create,edit,and manage all your AI-generated eBooks.
+              Create,edit,and manage all your AI-generated eBooks.
             </p>
           </div>
           <Button
@@ -74,14 +121,14 @@ const DashboardPage = () => {
         </div>
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {Array.from({ length: 4 }).map((_, i)=>(
+            {Array.from({ length: 4 }).map((_, i) => (
               <BookCardSkeleton key={i} />
             ))}
           </div>
         ) : books.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-slate-200">
             <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-              <Book className="w-8 h-8 text-slate-900 mb-2" />
+              <Book className="w-8 h-8 text-slate-900" />
             </div>
             <h3 className="text-lg font-medium text-slate-900 mb-2">
               No Ebooks found
@@ -89,19 +136,28 @@ const DashboardPage = () => {
             <p className="text-slate-500 mb-6 max-w-md">
               You havent created any eBooks yet. Get started by creating your first one.
             </p>
-            <Button onClick={handleCreateBookClick} icon={FaPlus}>
+            <Button onClick={handleCreateBookClick} icon={Plus}>
               Create your first eBook
             </Button>
           </div>
-        ) : (<div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-6">
-            {books.map((book)=>(
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {books.map((book) => (
               <BookCard
                 key={book._id}
                 book={book}
                 onDelete={() => setBookToDelete(book._id)}
               />
             ))}
-        </div>)}
+          </div>
+        )}
+        <ConfirmationModal
+          isOpen={!!bookToDelete}
+          onclose={() => setBookToDelete(null)}
+          onConfirm={handleDeleteBook}
+          title="Delete eBook"
+          message="Are you sure you want to delete the eBook? this action cannot be undone"
+        />
       </div>
     </DashboardLayout>
   )
