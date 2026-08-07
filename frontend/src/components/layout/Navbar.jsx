@@ -29,7 +29,7 @@ const Navbar = () => {
   }, [profileDropdownOpen])
 
   return (
-    <header className="bg-[#faf7f3] border-b border-[#e8e0d5]">
+    <header className="bg-[#fae9d3] border-b border-[#e8e0d5]">
       <div className='max-w-7xl mx-auto px-6 lg:px-8'>
         <div className='flex items-center justify-between h-16'>
           {/* Logo */}

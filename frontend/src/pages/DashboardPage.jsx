@@ -10,6 +10,7 @@ import { FaPlus } from "react-icons/fa"
 import { useAuth } from "@/context/AuthContext"
 import { Book, Plus } from "lucide-react";
 import BookCard from "@/components/cards/BookCard";
+import CreateBookModal from "@/components/CreateBookModal";
 
 const BookCardSkeleton = () => {
   <div className="animate-pulse bg-white border border-slate-200 rounded-lg shadow-sm">
@@ -81,11 +82,11 @@ const DashboardPage = () => {
       await axiosInstance.delete(
         `${API_PATHS.BOOKS.DELETE_BOOK}${bookToDelete}`
       );
-      console.log("error in path")
+
       setBooks(books.filter((book) => book._id !== bookToDelete));
       showSuccess("eBook deleted successfully")
     } catch (error) {
-      console.log(error)
+
       showError(error.response?.data?.message || "Failed to delete eBook.")
     } finally {
       setBookToDelete(null)
@@ -98,8 +99,7 @@ const DashboardPage = () => {
     setIsCreateModalOpen(false);
     navigate(`/editor/${bookId}`)
   }
-  console.log(books)
-
+  
 
   return (
     <DashboardLayout>
@@ -157,6 +157,11 @@ const DashboardPage = () => {
           onConfirm={handleDeleteBook}
           title="Delete eBook"
           message="Are you sure you want to delete the eBook? this action cannot be undone"
+        />
+        <CreateBookModal
+          isOpen={isCreateModalOpen}
+          onclose={() => setIsCreateModalOpen(false)}
+          onBookCreated={handleBookCreated}
         />
       </div>
     </DashboardLayout>

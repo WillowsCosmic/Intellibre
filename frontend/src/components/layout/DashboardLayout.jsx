@@ -19,16 +19,16 @@ const DashboardLayout = ({children}) => {
   }, [profileDropdownOpen])
   
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-[#f4f2ef]">
       <div className="flex-1 flex flex-col">
         <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 h-16 flex items-center justify-between px-16 sticky top-0 z-30">
           <div className="flex items-center space-x-4">
             <Link className='flex items-center space-x-3' to='/dashboard'>
-              <div className="h-14 w-8 bg-linear-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center">
+              <div className="h-9 w-8 bg-linear-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center">
                 <Album className='h-5 w-5 text-white' />
               </div>
               <span className="text-black font-bold text-xl">
-                AI eBook Creator
+                Intellibre
               </span>
             </Link>
           </div>
